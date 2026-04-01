@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LPU WiFi Auto Login</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 300px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #e0e0e0;
+      padding: 0;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0f3460, #533483);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .header .logo {
+      width: 36px;
+      height: 36px;
+      background: #e94560;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .header h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #a0b4c8;
+      margin-top: 2px;
+    }
+
+    .body {
+      padding: 18px 20px;
+    }
+
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      font-size: 12px;
+      color: #a0b4c8;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #555;
+      flex-shrink: 0;
+    }
+    .dot.active { background: #4caf50; box-shadow: 0 0 6px #4caf50; }
+    .dot.inactive { background: #e94560; }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      color: #8899aa;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.07);
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      border-color: #533483;
+    }
+
+    .hint {
+      font-size: 10px;
+      color: #556;
+      margin-top: 4px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #333;
+      border-radius: 22px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .slider::before {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      transition: 0.3s;
+    }
+
+    input:checked + .slider { background: #4caf50; }
+    input:checked + .slider::before { transform: translateX(18px); }
+
+    .btn-save {
+      width: 100%;
+      padding: 11px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #533483, #e94560);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-save:hover { opacity: 0.88; }
+    .btn-save:active { opacity: 0.75; }
+
+    .toast {
+      display: none;
+      margin-top: 12px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      text-align: center;
+    }
+    .toast.success {
+      background: rgba(76,175,80,0.2);
+      color: #81c784;
+      border: 1px solid rgba(76,175,80,0.3);
+    }
+
+    .footer {
+      padding: 10px 20px 14px;
+      text-align: center;
+      font-size: 10px;
+      color: #334;
+    }
+
+    .btn-login-now {
+      width: 100%;
+      padding: 9px;
+      border: 1px solid rgba(83,52,131,0.6);
+      border-radius: 8px;
+      background: transparent;
+      color: #a08fc0;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+    }
+    .btn-login-now:hover { background: rgba(83,52,131,0.2); }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="logo">W</div>
+    <div>
+      <h1>LPU WiFi Auto Login</h1>
+      <p>24Online Captive Portal</p>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="status-bar">
+      <div class="dot" id="statusDot"></div>
+      <span id="statusText">Checking saved credentials…</span>
+    </div>
+
+    <div class="field">
+      <label>LPU Username</label>
+      <input type="text" id="username" placeholder="e.g. 12345678" />
+      <div class="hint">Don't include @lpu.com — it's added automatically.</div>
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Your WiFi password" />
+    </div>
+
+    <div class="toggle-row">
+      <span class="toggle-label">Auto-login when page opens</span>
+      <label class="toggle">
+        <input type="checkbox" id="autoLogin" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <button class="btn-save" id="saveBtn">Save Credentials</button>
+    <button class="btn-login-now" id="loginNowBtn">Open Login Page Now</button>
+
+    <div class="toast success" id="toast">✓ Saved! Auto-login is ready.</div>
+  </div>
+
+  <div class="footer">Credentials stored locally on your device only.</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
