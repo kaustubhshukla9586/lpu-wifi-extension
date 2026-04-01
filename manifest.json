@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "LPU WiFi Auto Login",
+  "version": "1.0",
+  "description": "Automatically logs into LPU hostel WiFi (24Online portal)",
+  "permissions": [
+    "storage",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+  "https://internet.lpu.in/*",
+  "https://10.10.0.1/*"
+],
+"content_scripts": [
+  {
+    "matches": [
+      "https://internet.lpu.in/24online/webpages/client.jsp*",
+      "https://10.10.0.1/24online/servlet/E24onlineHTTPClient*",
+      "https://10.10.0.1/24online/webpages/client.jsp*"
+    ],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }
+],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  }
+}
