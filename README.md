@@ -17,8 +17,8 @@ When you connect to hostel WiFi, the browser opens the 24Online portal. The exte
 **Step 1 — Get the code**
  
 ```bash
-git clone https://github.com/YOUR_USERNAME/lpu-wifi-autologin.git
-cd lpu-wifi-autologin
+git clone https://github.com/kaustubhshukla9586/lpu-wifi-extension.git
+cd lpu-wifi-extension
 ```
  
 Or if you don't have Git, click **Code → Download ZIP** on GitHub, then extract the ZIP somewhere you'll remember (like your Desktop).
@@ -67,7 +67,7 @@ lpu-wifi-extension/
 ├── background.js     # Service worker
 ├── popup.html        # Extension popup UI
 ├── popup.js          # Save/load credentials logic
-└── icons/
+└── icons/*.png
 ```
  
 ---
