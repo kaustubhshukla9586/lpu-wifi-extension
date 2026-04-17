@@ -1,6 +1,6 @@
 # 🛜 LPU WiFi Auto Login
  
-A Chrome extension that automatically logs you into LPU's hostel WiFi (24Online captive portal) the moment the login page opens — no more typing credentials every single time you reconnect.
+A Chrome extension that automatically logs you into LPU's WiFi (24Online captive portal) the moment the login page opens — no more typing credentials every single time you reconnect.
  
 ---
  
